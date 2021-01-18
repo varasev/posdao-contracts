@@ -124,6 +124,11 @@ contract ValidatorSetAuRa is UpgradeabilityAdmin, IValidatorSetAuRa {
     /// @param blockNumber The block number at which the `maliciousValidator` misbehaved.
     event ReportedMalicious(address reportingValidator, address maliciousValidator, uint256 blockNumber);
 
+    /// @dev Emitted by the `_setStakingAddress` internal function.
+    /// @param miningAddress The mining address to which the stakingAddress is bound.
+    /// @param stakingAddress The staking address which is bound to the miningAddress.
+    event SetStakingAddress(address indexed miningAddress, address indexed stakingAddress);
+
     // ============================================== Modifiers =======================================================
 
     /// @dev Ensures the `initialize` function was called before.
@@ -836,6 +841,7 @@ contract ValidatorSetAuRa is UpgradeabilityAdmin, IValidatorSetAuRa {
         require(stakingByMiningAddress[_miningAddress] == address(0));
         miningByStakingAddress[_stakingAddress] = _miningAddress;
         stakingByMiningAddress[_miningAddress] = _stakingAddress;
+        emit SetStakingAddress(_miningAddress, _stakingAddress);
     }
 
     /// @dev Returns the future block number until which a validator is banned.
