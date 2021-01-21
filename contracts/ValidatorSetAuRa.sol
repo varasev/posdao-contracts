@@ -124,6 +124,8 @@ contract ValidatorSetAuRa is UpgradeabilityAdmin, IValidatorSetAuRa {
     /// @param blockNumber The block number at which the `maliciousValidator` misbehaved.
     event ReportedMalicious(address reportingValidator, address maliciousValidator, uint256 blockNumber);
 
+    event ReportMaliciousCalled(address reportingValidator, address maliciousValidator, uint256 blockNumber);
+
     // ============================================== Modifiers =======================================================
 
     /// @dev Ensures the `initialize` function was called before.
@@ -330,6 +332,8 @@ contract ValidatorSetAuRa is UpgradeabilityAdmin, IValidatorSetAuRa {
         bytes calldata
     ) external onlyInitialized {
         address reportingMiningAddress = msg.sender;
+        
+        emit ReportMaliciousCalled(reportingMiningAddress, _maliciousMiningAddress, _blockNumber);
 
         _incrementReportingCounter(reportingMiningAddress);
 
